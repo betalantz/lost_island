@@ -1,0 +1,5 @@
+class Island::FoodSource
+
+
+
+end
