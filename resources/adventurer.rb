@@ -3,12 +3,12 @@
 class Adventurer
 
     attr_accessor :island, :location
-    attr_reader :bucket_contents, :health, :state, :base
+    attr_reader :bucket_contents, :health, :state, :base, :thirst, :hunger
 
     def initialize(island)
         @island = island
         @location = island.starting_location
-        @base = nil
+        @base = @location
         @bucket_contents = nil
         @health = 100
         @state = :alive
@@ -33,15 +33,16 @@ class Adventurer
     end
 
     def go_home
-        if @status == :dead
+        if @state == :dead
             puts "I CANNOT GO HOME BECAUSE I AM DEAD"
             return
         end
-        @locaiton = @base
+        puts "Going home..."
+        @location = @base
     end
 
     def fill_bucket(contents)
-        if @status == :dead
+        if @state == :dead
             puts 'I CANNOT FILL MY BUCKET BECASUE I AM DEAD'
             return
         end
@@ -49,7 +50,7 @@ class Adventurer
     end
 
     def drink(water)
-        if @status == :dead
+        if @state == :dead
             puts "I CANNOT DRINK WATER BECAUSE I AM DEAD"
             return
         end
@@ -63,12 +64,15 @@ class Adventurer
                 puts "UGH THAT MADE ME SICK!"
                 decrement_health(10)
                 puts "MY HEALTH IS NOW #{@health}"
-            else
+            end
+            if h20 = water.contents.find{ |c| c.name == :h20 }
+                raise StandardError.new("YOU CHEATER!") if h20.created_at > LOCK_TIME
                 @thirst -= 30
                 if @thirst < 0
                     @thirst = 0
                 end
             end
+            water.contents = []
         end
     end
 
@@ -79,6 +83,7 @@ class Adventurer
         if @health < 0
             @health = 0
             status = :dead
+            puts "I AM DEAD"
         end
     end
 

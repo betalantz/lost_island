@@ -34,6 +34,18 @@ class Island::Location
         return @resources.any? { |i| i.class == Island::WaterSource }
     end
 
+    def has_camp?
+        return @resources.any? { |i| i.class == Island::Camp }
+    end
+
+    def camp
+        if has_camp?
+            return @resources.find{ |r| r.class == Island::Camp }
+        else
+            puts "There is no camp here!"
+        end
+    end
+
     def get_water
         if has_water?
             return @resources.find{ |r| r.class == Island::WaterSource }.get_water

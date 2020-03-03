@@ -32,6 +32,7 @@ class Island
         @rows, @cols = locations.length, locations.first.length
         @locations = locations
         @starting_location = starting_location
+        @starting_location.resources << Island::Camp.new
         @locations.each { |row| row.each{ |l|  l.island = self} }
     end
 
