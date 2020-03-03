@@ -67,6 +67,7 @@ class Adventurer
             end
             if h20 = water.contents.find{ |c| c.name == :h20 }
                 raise StandardError.new("YOU CHEATER!") if h20.created_at > LOCK_TIME
+                puts "THAT HIT THE SPOT!"
                 @thirst -= 30
                 if @thirst < 0
                     @thirst = 0
